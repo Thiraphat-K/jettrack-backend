@@ -1,0 +1,19 @@
+version: '3.9'
+
+services:
+  postgres:
+    image: postgres:14-alpine
+    ports:
+      - 5432:5432
+    volumes:
+      - talker-postgres:/var/lib/postgresql/data
+      - ./db:/docker-entrypoint-initdb.d
+    environment:
+      - POSTGRES_PASSWORD=admin1234
+      - POSTGRES_USER=root
+      - POSTGRES_DB=talker
+
+    
+
+volumes:
+  talker-postgres:
