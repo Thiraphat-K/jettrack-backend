@@ -6,6 +6,6 @@ CREATE TABLE students (
 );
 
 INSERT INTO
-    students (name, age)
+    students (id, name, email, picture)
 VALUES
     (1234, "kao", "kao@hotmail.com", "http://localhost:3000/pic")

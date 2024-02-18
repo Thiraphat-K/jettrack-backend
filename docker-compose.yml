@@ -13,7 +13,5 @@ services:
       - POSTGRES_USER=root
       - POSTGRES_DB=talker
 
-    
-
 volumes:
   talker-postgres:

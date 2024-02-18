@@ -1,13 +1,20 @@
-import { Controller, Get } from "@nestjs/common";
-import { AppService } from "./app.service";
-import ConfigurationService from "./commons/services/configuration.service";
+import { Body, Controller, Get, Post } from "@nestjs/common";
+import { GoogleRegisterDto } from "./dto/google-register.dto";
+import AuthService from "./auth.service";
 
-@Controller()
-export class AppController {
-  constructor(private readonly appService: AppService, private readonly configService: ConfigurationService) {}
+@Controller("user")
+class AuthController {
+  constructor(private readonly authService: AuthService) {}
+
+  @Post("google-register")
+  async googleRegister(@Body() input: GoogleRegisterDto) {
+    return await this.authService.googleRegister(input);
+  }
 
   @Get()
-  getHello(): string {
-    return this.configService.get("DB_HOST") + this.configService.get("DB_PASSWORD");
-  }
+  async getAllUsers() {
+    return await this.authService.getAllUser();
+  }  
 }
+
+export default AuthController;
