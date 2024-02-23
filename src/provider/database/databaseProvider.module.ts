@@ -1,15 +1,16 @@
 import { DynamicModule, Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import ConfigurationService from "../services/configuration.service";
-import EnvModule from "./env.module";
+import AppConfigService from "@src/config/app/config.service";
+
 import User from "@src/auth/entities/user.entity";
+import AppConfigModule from "@src/config/app/config.module";
 
 @Module({
   imports: [
     TypeOrmModule.forRootAsync({
-      imports: [EnvModule],
-      inject: [ConfigurationService],
-      useFactory: (configService: ConfigurationService) => {
+      imports: [AppConfigModule],
+      inject: [AppConfigService],
+      useFactory: (configService: AppConfigService) => {
         return {
           type: "postgres",
           host: configService.get("DB_HOST"),
@@ -24,6 +25,6 @@ import User from "@src/auth/entities/user.entity";
     }),
   ],
 })
-class DBModule {}
+class DatabaseProviderModule {}
 
-export default DBModule;
+export default DatabaseProviderModule;

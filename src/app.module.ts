@@ -1,15 +1,15 @@
-import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { Module } from "@nestjs/common";
+import { AppController } from "./app.controller";
+import { AppService } from "./app.service";
 
-import EnvModule from './commons/modules/env.module';
-import ConfigurationService from './commons/services/configuration.service';
-import DBModule from './commons/modules/db.module';
-import AuthModule from './auth/auth.module';
+import AppConfigModule from "./config/app/config.module";
+
+import DatabaseProviderModule from "./provider/database/databaseProvider.module";
+import AuthModule from "./auth/auth.module";
 
 @Module({
-  imports: [EnvModule, DBModule, AuthModule],
+  imports: [AppConfigModule, DatabaseProviderModule, AuthModule],
   controllers: [AppController],
-  providers: [AppService, ConfigurationService],
+  providers: [AppService],
 })
 export class AppModule {}

@@ -1,6 +1,6 @@
 import z from "zod";
 
-export const configurationSchema = z.object({
+export const appConfigSchema = z.object({
   DB_HOST: z.string(),
   DB_PASSWORD: z.string(),
   DB_USERNAME: z.string(),
@@ -8,4 +8,4 @@ export const configurationSchema = z.object({
   DB_DATABASE: z.string(),
 });
 
-export type Configuration = z.infer<typeof configurationSchema>;
+export type AppConfig = z.infer<typeof appConfigSchema>;
