@@ -9,11 +9,6 @@ import CatchAllExceptionFilter from "@src/common/exception/catchAllException.fil
 class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  // @Post("google-register")
-  // async googleRegister(@Body() input: GoogleRegisterDto) {
-  //   return await this.authService.googleRegister(input);
-  // }
-
   @Post("login")
   @UseFilters(CatchAllExceptionFilter)
   async login(@Body() input: LoginDto) {
@@ -23,11 +18,6 @@ class AuthController {
   @Post("register")
   async register(@Body() input: RegisterDto) {
     return await this.authService.register(input);
-  }
-
-  @Get()
-  async getAllUsers() {
-    return await this.authService.getAllUser();
   }
 }
 

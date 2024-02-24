@@ -1,6 +1,5 @@
 import { HttpException, HttpStatus, Injectable, UnauthorizedException } from "@nestjs/common";
-import User, { UserRole } from "./entities/user.entity";
-import { GoogleRegisterDto } from "./dto/google-register.dto";
+import User, { UserRole } from "../../model/user.entity";
 import { Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
 import { LoginDto } from "./dto/login.dto";
@@ -32,11 +31,6 @@ class AuthService {
       await this.repository.save(newUser);
       return newUser;
     } else throw new HttpException("this user already Exist", HttpStatus.BAD_REQUEST);
-  }
-
-  async getAllUser(): Promise<User[]> {
-    const users = await this.repository.find();
-    return users;
   }
 }
 

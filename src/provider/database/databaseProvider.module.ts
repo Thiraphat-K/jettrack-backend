@@ -2,7 +2,7 @@ import { DynamicModule, Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import AppConfigService from "@src/config/app/config.service";
 
-import User from "@src/auth/entities/user.entity";
+import User from "@src/model/user.entity";
 import AppConfigModule from "@src/config/app/config.module";
 
 @Module({
