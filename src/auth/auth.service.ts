@@ -1,9 +1,10 @@
-import { Injectable, UnauthorizedException } from "@nestjs/common";
-import User from "./entities/user.entity";
+import { HttpException, HttpStatus, Injectable, UnauthorizedException } from "@nestjs/common";
+import User, { UserRole } from "./entities/user.entity";
 import { GoogleRegisterDto } from "./dto/google-register.dto";
 import { Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
 import { LoginDto } from "./dto/login.dto";
+import { RegisterDto } from "./dto/register.dto";
 
 @Injectable()
 class AuthService {
@@ -12,27 +13,26 @@ class AuthService {
     private readonly repository: Repository<User>,
   ) {}
 
-  // async googleRegister(createDto: GoogleRegisterDto): Promise<User> {
-  //   let user = await this.repository.findOneBy({ email: createDto.email });
-
-  //   if (!user) {
-  //     const { id, ...createDtoo } = createDto
-  //     user = this.repository.create(createDtoo);
-  //     await this.repository.save(user);
-  //   }
-
-  //   return user;
-  // }
-
   async login(loginInput: LoginDto): Promise<User> {
     const user = await this.repository.findOneBy({ username: loginInput.username });
 
-    if (!user) throw new Error("user is not exist");
+    if (!user) throw new HttpException("user is not exist", HttpStatus.BAD_REQUEST);
     if (loginInput.password == user.password) return user;
     else throw new UnauthorizedException();
   }
 
-  async register 
+  async register(registerInput: RegisterDto): Promise<User> {
+    const user = await this.repository.findOneBy({ username: registerInput.username });
+    if (!user) {
+      const newUser = await this.repository.create({
+        username: registerInput.username,
+        password: registerInput.password,
+        role: UserRole.ADMIN,
+      });
+      await this.repository.save(newUser);
+      return newUser;
+    } else throw new HttpException("this user already Exist", HttpStatus.BAD_REQUEST);
+  }
 
   async getAllUser(): Promise<User[]> {
     const users = await this.repository.find();
