@@ -1,19 +1,38 @@
-import { HttpAdapterHost, NestFactory } from "@nestjs/core";
+import { NestFactory } from "@nestjs/core";
 import { AppModule } from "./app.module";
 import { ValidationPipe } from "@nestjs/common";
-import CatchAllExceptionFilter from "./common/exception/catchAllException.filter";
+
+import { MicroserviceOptions, Transport } from "@nestjs/microservices";
+import KafkaRealtimeModule from "./module/realtime/consumer/kafkaRealtime.module";
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, { cors: { origin: "http://localhost:3000" } });
+
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true,
     }),
   );
+  app.enableCors({
+    origin: "http://localhost:3000",
+  });
 
-  // const httpAdapterHost = app.get(HttpAdapterHost);
-  // app.useGlobalFilters(new CatchAllExceptionFilter(httpAdapterHost));
 
+  const kafkaClient = await NestFactory.createMicroservice<MicroserviceOptions>(KafkaRealtimeModule, {
+    transport: Transport.KAFKA,
+    options: {
+      client: {
+        clientId: "consumer-1",
+        brokers: ["localhost:9093"],
+      },
+      consumer: {
+        groupId: "",
+      },
+      postfixId: "",
+    },
+  });
+
+  await kafkaClient.listen();
   await app.listen(3001);
 }
 bootstrap();
