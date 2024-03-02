@@ -1,0 +1,27 @@
+import { Controller, Get, Param } from "@nestjs/common";
+import { MessagePattern, Payload } from "@nestjs/microservices";
+import { History, historySchema } from "@src/types/history.type";
+import HistoryService from "./history.service";
+
+@Controller('history')
+class HistoryController {
+  constructor (private readonly historyService: HistoryService) {}
+
+  @MessagePattern('history')
+  imageHandler(@Payload() message: History) {
+    const parsedHistory = historySchema.parse(message)
+    this.historyService.historyHandler(parsedHistory)
+  }
+
+  @Get('')
+  getAllHistory() {
+    return this.historyService.getAll()
+  }
+
+  @Get(':id')
+  getHistoryById(@Param('id') id: number) {
+    return this.historyService.getById(id)
+  }
+}
+
+export default HistoryController

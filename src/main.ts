@@ -3,7 +3,7 @@ import { AppModule } from "./app.module";
 import { ValidationPipe } from "@nestjs/common";
 
 import { MicroserviceOptions, Transport } from "@nestjs/microservices";
-import KafkaRealtimeModule from "./module/realtime/consumer/kafkaRealtime.module";
+import KafkaProviderModule from "./provider/kafka/kafkaProvider.module";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { cors: { origin: "http://localhost:3000" } });
@@ -18,21 +18,21 @@ async function bootstrap() {
   });
 
 
-  const kafkaClient = await NestFactory.createMicroservice<MicroserviceOptions>(KafkaRealtimeModule, {
+  const kafkaClient = await NestFactory.createMicroservice<MicroserviceOptions>(KafkaProviderModule, {
     transport: Transport.KAFKA,
     options: {
       client: {
-        clientId: "consumer-1",
+        clientId: "backend-consumer",
         brokers: ["localhost:9093"],
       },
       consumer: {
-        groupId: "",
+        groupId: "1",
       },
       postfixId: "",
     },
   });
 
-  await kafkaClient.listen();
-  await app.listen(3001);
+  kafkaClient.listen();
+  app.listen(3001);
 }
 bootstrap();

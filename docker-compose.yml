@@ -41,8 +41,6 @@ services:
     depends_on:
       - zookeeper
 
-
-
   kafka-ui:
     image: provectuslabs/kafka-ui
     container_name: kafka-ui
@@ -58,7 +56,18 @@ services:
         - kafka
         - zookeeper
 
-
+  minio:
+    container_name: s3minio
+    image: bitnami/minio:latest
+    environment:
+      - MINIO_ROOT_USER=jtadmin
+      - MINIO_ROOT_PASSWORD=jt@minioCEP66
+      - MINIO_API_PORT_NUMBER=9000
+    ports:
+      - "9001:9001"
+      - "9000:9000"
+    volumes:
+      - "minio-storage:/bitnami/minio/data"
 
 volumes:
   zookeeper_data:
@@ -69,3 +78,6 @@ volumes:
     
   talker-postgres:
     driver: local
+  
+  minio-storage:
+      driver: local

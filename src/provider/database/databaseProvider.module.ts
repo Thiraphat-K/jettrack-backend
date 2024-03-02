@@ -4,6 +4,7 @@ import AppConfigService from "@src/config/app/config.service";
 
 import User from "@src/model/user.entity";
 import AppConfigModule from "@src/config/app/config.module";
+import History from "@src/model/history.entity";
 
 @Module({
   imports: [
@@ -18,7 +19,7 @@ import AppConfigModule from "@src/config/app/config.module";
           password: configService.get("DB_PASSWORD"),
           username: configService.get("DB_USERNAME"),
           database: configService.get("DB_DATABASE"),
-          entities: [User],
+          entities: [User, History],
           synchronize: true,
         };
       },

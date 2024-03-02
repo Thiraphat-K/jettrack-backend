@@ -3,7 +3,7 @@ import { MessagePattern, Payload } from '@nestjs/microservices';
 import SocketSessionService from '../socket/socketSession.service';
 
 @Controller()
-class KafkaRealtimeController {
+class RealtimeController {
 
   constructor (private readonly socketSessionService: SocketSessionService) {}
 
@@ -14,4 +14,4 @@ class KafkaRealtimeController {
   }
 }
 
-export default KafkaRealtimeController
+export default RealtimeController
