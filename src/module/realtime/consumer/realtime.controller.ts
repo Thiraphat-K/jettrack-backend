@@ -9,7 +9,6 @@ class RealtimeController {
 
   @MessagePattern('image')
   imageHandler(@Payload() message: string) {
-    console.log(message)
     SocketSessionService.broadcast(message)
   }
 }

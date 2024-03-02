@@ -54,8 +54,6 @@ class HistoryService {
       province: history.data.province,
       timestamp: history.data.date_time,
     });
-
-    console.log(createdHistory);
   }
 
   async create(history: GoogleRegisterDto): Promise<History> {
