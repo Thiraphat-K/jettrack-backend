@@ -39,7 +39,7 @@ class HistoryService {
     }
   }
 
-  async historyHandler(history: IHistory): Promise<void> {
+  async historyHandler(history: IHistory): Promise<History> {
     const carBuffer = Buffer.from(history.car_image.replace(/^data:image\/\w+;base64,/, ""), "base64");
     const carImageUrl = await this.minioService.uploadImageFromBuffer(this.carBucketName, carBuffer);
 
@@ -54,6 +54,8 @@ class HistoryService {
       province: history.data.province,
       timestamp: history.data.date_time,
     });
+
+    return createdHistory
   }
 
   async create(history: GoogleRegisterDto): Promise<History> {

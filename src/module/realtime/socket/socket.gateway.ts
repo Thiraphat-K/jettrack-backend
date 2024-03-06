@@ -19,6 +19,14 @@ class SocketGateway {
       message: `received: ${JSON.stringify(payload)}`,
     });
   }
+
+  @SubscribeMessage("realtime")
+  onGreet2(client: Socket, payload: any) {
+    SocketSessionService.register(client);
+    // client.emit("realtime", {
+    //   message: `received: ${JSON.stringify(payload)}`,
+    // });
+  }
 }
 
 export default SocketGateway

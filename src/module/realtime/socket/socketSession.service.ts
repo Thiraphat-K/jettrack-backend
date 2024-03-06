@@ -1,30 +1,36 @@
-import { Injectable } from '@nestjs/common';
-import {Socket} from 'socket.io';
+import { Injectable } from "@nestjs/common";
+import { Socket } from "socket.io";
 
 @Injectable()
 class SocketSessionService {
-    private static clients = new Map();
+  private static clients = new Map();
 
-    public static register(client: Socket) {
-        if (!this.clients.has(client.id)) {
-            this.clients.set(client.id, client);
-            client.broadcast.emit('joiner', {message: `${client.id} joined`});
-            client.on('disconnect', () => {
-                this.clients.delete(client.id);
-                console.log(`client disconnected:  ${this.clients.size}`, client.id);
-            });
-        }
+  public static register(client: Socket) {
+    if (!this.clients.has(client.id)) {
+      this.clients.set(client.id, client);
+      client.broadcast.emit("joiner", { message: `${client.id} joined` });
+      client.on("disconnect", () => {
+        this.clients.delete(client.id);
+        console.log(`client disconnected:  ${this.clients.size}`, client.id);
+      });
     }
+  }
 
-    public static broadcast(message: string) {
-        this.clients.forEach(client => {
-            client.emit('response', {message});
-        });
-    }
+  public static broadcast(message: string) {
+    this.clients.forEach(client => {
+      client.emit("response", { message });
+    });
+  }
 
-    public hey(): string {
-      return "hello"
-    }
+  public static broadcaseChannel(channel: string, message: any) {
+    this.clients.forEach(client => {
+      client.emit(channel, { message: JSON.stringify(message) });
+    });
+  }
+
+  public hey(): string {
+    return "hello";
+  }
 }
 
-export default SocketSessionService
+export default SocketSessionService;

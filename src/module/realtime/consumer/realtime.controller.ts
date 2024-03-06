@@ -7,7 +7,7 @@ class RealtimeController {
 
   constructor (private readonly socketSessionService: SocketSessionService) {}
 
-  @MessagePattern('image')
+  @MessagePattern('frame')
   imageHandler(@Payload() message: string) {
     SocketSessionService.broadcast(message)
   }
